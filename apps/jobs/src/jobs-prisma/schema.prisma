@@ -1,0 +1,29 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["extendedWhereUnique"]
+  output          = "../../../../node_modules/@app/jobs/prisma-client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Job {
+  id              Int            @id @default(autoincrement())
+  title           String
+  description     String
+  salary          Int
+  searchIndex     String?        @map("search_index")
+  searchableSince DateTime?      @map("searchable_since") @db.Timestamptz(6)
+  employmentType  EmploymentType @map("employment_type")
+
+  @@map("jobs")
+}
+
+enum EmploymentType {
+  FULL_TIME
+  PART_TIME
+
+  @@map("employment_type")
+}
